@@ -1,0 +1,9 @@
+
+app:
+  redis:
+    first:
+      host: 127.0.0.1
+      port: 6379
+    second:
+      host: 127.0.0.1
+      port: 6380
