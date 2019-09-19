@@ -5,6 +5,7 @@
 使用方式：在yml中配置多个redis（见application.yml）格式为
 * app.redis.abc: redis配置
 * app.redis.def: redis配置
+
 代码中注入方式为：
 @Autowired
 RedisClientDecorate abcRedisClient;
