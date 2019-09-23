@@ -56,8 +56,10 @@ public class StandaloneRedisConfig extends BaseRedisConfig {
     public JedisConnectionFactory buildJedisConnectionFactory() {
         RedisStandaloneConfiguration standaloneConfig = new RedisStandaloneConfiguration();
         standaloneConfig.setHostName(this.host);
-        standaloneConfig.setPassword(RedisPassword.of(this.password));
         standaloneConfig.setPort(this.port);
+        if (this.password != null) {
+            standaloneConfig.setPassword(RedisPassword.of(this.password));
+        }
 
         JedisPoolConfig jedisPoolConfig = getJedisPoolConfig();
         JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder().usePooling().

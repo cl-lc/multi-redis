@@ -4,6 +4,7 @@ package fun.cllc.redis.config.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.redis.connection.RedisNode;
+import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.util.StringUtils;
@@ -22,9 +23,11 @@ public class SentinelRedisConfig extends BaseRedisConfig {
     public static final String CONFIG_PREFIX = "sentinel";
     private static final String KEY_MASTER = CONFIG_PREFIX + ".master";
     private static final String KEY_NODES = CONFIG_PREFIX + ".nodes";
+    private static final String PASSWORD = "password";
 
     private String master;
     private String nodes;
+    private String password;
 
     public SentinelRedisConfig() {
         super();
@@ -42,6 +45,8 @@ public class SentinelRedisConfig extends BaseRedisConfig {
             this.master = value;
         } else if (KEY_NODES.equals(key)) {
             this.nodes = value;
+        } else if (PASSWORD.equals(key)) {
+            this.password = value;
         } else {
             super.parseConfig(key, value);
         }
@@ -76,6 +81,9 @@ public class SentinelRedisConfig extends BaseRedisConfig {
         RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration();
         sentinelConfig.master(this.master);
         sentinelConfig.setSentinels(nodes);
+        if (this.password != null) {
+            sentinelConfig.setPassword(RedisPassword.of(this.password));
+        }
 
         JedisPoolConfig jedisPoolConfig = getJedisPoolConfig();
         return new JedisConnectionFactory(sentinelConfig, jedisPoolConfig);

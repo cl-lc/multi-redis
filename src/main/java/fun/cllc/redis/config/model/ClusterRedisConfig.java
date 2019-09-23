@@ -4,6 +4,7 @@ package fun.cllc.redis.config.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
+import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -19,9 +20,11 @@ public class ClusterRedisConfig extends BaseRedisConfig {
     public static final String CONFIG_PREFIX = "cluster";
     private static final String KEY_MAX_REDIRECTS = CONFIG_PREFIX + ".max-redirects";
     private static final String KEY_NODES = CONFIG_PREFIX + ".nodes";
+    private static final String PASSWORD = "password";
 
     private Integer maxRedirects;
     private String nodes;
+    private String password;
 
     public ClusterRedisConfig() {
         super();
@@ -39,6 +42,8 @@ public class ClusterRedisConfig extends BaseRedisConfig {
             this.maxRedirects = Integer.valueOf(value);
         } else if (KEY_NODES.equals(key)) {
             this.nodes = value;
+        } else if (PASSWORD.equals(key)) {
+            this.password = value;
         } else {
             super.parseConfig(key, value);
         }
@@ -57,6 +62,9 @@ public class ClusterRedisConfig extends BaseRedisConfig {
 
         String[] items = this.nodes.split(",");
         RedisClusterConfiguration clusterConfig = new RedisClusterConfiguration(Arrays.asList(items));
+        if (this.password != null) {
+            clusterConfig.setPassword(RedisPassword.of(this.password));
+        }
         if (this.maxRedirects != null) {
             clusterConfig.setMaxRedirects(this.maxRedirects);
         }
