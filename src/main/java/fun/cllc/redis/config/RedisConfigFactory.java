@@ -17,20 +17,28 @@ public class RedisConfigFactory {
      * @return
      */
     public static BaseRedisConfig getInstance(Set<String> keys) {
+        boolean hasClusterConfig = false;
+        boolean hasSentinelConfig = false;
         for (String key : keys) {
             if (key.startsWith(RedisPoolConfig.CONFIG_PREFIX)) {
                 continue;
             }
 
             if (key.startsWith(ClusterRedisConfig.CONFIG_PREFIX)) {
-                return new ClusterRedisConfig();
+                hasClusterConfig = true;
+                break;
             } else if (key.startsWith(SentinelRedisConfig.CONFIG_PREFIX)) {
-                return new SentinelRedisConfig();
-            } else {
-                return new StandaloneRedisConfig();
+                hasSentinelConfig = true;
+                break;
             }
         }
 
-        throw new IllegalArgumentException("Unknown redis config keys");
+        if (hasClusterConfig) {
+            return new ClusterRedisConfig();
+        } else if (hasSentinelConfig) {
+            return new SentinelRedisConfig();
+        } else {
+            return new StandaloneRedisConfig();
+        }
     }
 }

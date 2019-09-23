@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.util.Assert;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class ClusterRedisConfig extends BaseRedisConfig {
     public static final String CONFIG_PREFIX = "cluster";
     private static final String KEY_MAX_REDIRECTS = CONFIG_PREFIX + ".max-redirects";
     private static final String KEY_NODES = CONFIG_PREFIX + ".nodes";
-    private static final String PASSWORD = "password";
+    private static final String KEY_PASSWORD = "password";
 
     private Integer maxRedirects;
     private String nodes;
@@ -42,7 +43,7 @@ public class ClusterRedisConfig extends BaseRedisConfig {
             this.maxRedirects = Integer.valueOf(value);
         } else if (KEY_NODES.equals(key)) {
             this.nodes = value;
-        } else if (PASSWORD.equals(key)) {
+        } else if (KEY_PASSWORD.equals(key)) {
             this.password = value;
         } else {
             super.parseConfig(key, value);
@@ -56,9 +57,7 @@ public class ClusterRedisConfig extends BaseRedisConfig {
      */
     @Override
     public JedisConnectionFactory buildJedisConnectionFactory() {
-        if (this.nodes == null || this.nodes.isEmpty()) {
-            return null;
-        }
+        Assert.notNull(this.nodes, "Illegal nodes of cluster redis config, name: " + this.getName());
 
         String[] items = this.nodes.split(",");
         RedisClusterConfiguration clusterConfig = new RedisClusterConfiguration(Arrays.asList(items));

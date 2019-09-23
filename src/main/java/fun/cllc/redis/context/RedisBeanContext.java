@@ -3,6 +3,7 @@ package fun.cllc.redis.context;
 import fun.cllc.redis.client.RedisClientDecorate;
 import fun.cllc.redis.config.RedisConfigParser;
 import fun.cllc.redis.config.model.BaseRedisConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -20,6 +21,7 @@ import java.util.List;
  * @author chenlei
  * @date 2019-09-09
  */
+@Slf4j
 @Configuration
 public class RedisBeanContext implements EnvironmentAware, BeanFactoryPostProcessor {
     private static final String REDIS_CLIENT_NAME_POSTFIX = "RedisClient";
@@ -51,6 +53,8 @@ public class RedisBeanContext implements EnvironmentAware, BeanFactoryPostProces
         String name = redisConfig.getName();
         name = name.isEmpty() ? REDIS_CLIENT_DEFAULT_NAME : name + REDIS_CLIENT_NAME_POSTFIX;
         this.beanFactory.registerBeanDefinition(name, builder.getBeanDefinition());
+
+        log.info("Injected redis: {}", name);
     }
 
     @Override

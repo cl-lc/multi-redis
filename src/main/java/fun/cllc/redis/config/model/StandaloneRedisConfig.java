@@ -7,6 +7,7 @@ import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.util.Assert;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -54,6 +55,9 @@ public class StandaloneRedisConfig extends BaseRedisConfig {
      */
     @Override
     public JedisConnectionFactory buildJedisConnectionFactory() {
+        Assert.notNull(this.host, "Illegal host of standalone redis config, name: " + this.getName());
+        Assert.notNull(this.port, "Illegal port of standalone redis config, name: " + this.getName());
+
         RedisStandaloneConfiguration standaloneConfig = new RedisStandaloneConfiguration();
         standaloneConfig.setHostName(this.host);
         standaloneConfig.setPort(this.port);
