@@ -10,7 +10,7 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 @Data
 public class RedisPoolConfig {
-    public static final String CONFIG_PREFIX = "jedis";
+    public static final String CONFIG_PREFIX = "jedis.pool";
     private static final String KEY_MAX_IDLE = CONFIG_PREFIX + ".max-idle";
     private static final String KEY_MIN_IDLE = CONFIG_PREFIX + ".min-idle";
     private static final String KEY_MAX_ACTIVE = CONFIG_PREFIX + ".max-active";

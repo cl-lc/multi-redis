@@ -3,6 +3,7 @@ package fun.cllc.redis.config.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.redis.connection.RedisNode;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
@@ -19,6 +20,7 @@ import java.util.List;
  * @date 2019-09-09
  */
 @Data
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class SentinelRedisConfig extends BaseRedisConfig {
     public static final String CONFIG_PREFIX = "sentinel";

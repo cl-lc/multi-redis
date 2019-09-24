@@ -3,6 +3,7 @@ package fun.cllc.redis.config.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -16,6 +17,7 @@ import java.util.Arrays;
  * @date 2019-09-09
  */
 @Data
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class ClusterRedisConfig extends BaseRedisConfig {
     public static final String CONFIG_PREFIX = "cluster";

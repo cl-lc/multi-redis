@@ -12,7 +12,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.data.redis.connection.*;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
@@ -43,7 +43,8 @@ public class RedisBeanContext implements EnvironmentAware, BeanFactoryPostProces
      */
     private void injectRedis(BaseRedisConfig redisConfig) {
         RedisTemplate<String, String> template = new RedisTemplate<>();
-        RedisConnectionFactory factory = redisConfig.buildJedisConnectionFactory();
+        JedisConnectionFactory factory = redisConfig.buildJedisConnectionFactory();
+        factory.afterPropertiesSet();
         template.setConnectionFactory(factory);
         template.afterPropertiesSet();
 
@@ -54,7 +55,7 @@ public class RedisBeanContext implements EnvironmentAware, BeanFactoryPostProces
         name = name.isEmpty() ? REDIS_CLIENT_DEFAULT_NAME : name + REDIS_CLIENT_NAME_POSTFIX;
         this.beanFactory.registerBeanDefinition(name, builder.getBeanDefinition());
 
-        log.info("Injected redis: {}", name);
+        log.info("Injected redis:{}", redisConfig.toString());
     }
 
     @Override

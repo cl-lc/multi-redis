@@ -3,6 +3,7 @@ package fun.cllc.redis.config.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
@@ -15,6 +16,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @date 2019-09-09
  */
 @Data
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class StandaloneRedisConfig extends BaseRedisConfig {
     private static final String KEY_HOST = "host";
